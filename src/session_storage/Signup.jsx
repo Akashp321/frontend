@@ -1,63 +1,61 @@
-import React from 'react'
-import Autocomplete  from '@mui/material/Autocomplete';
+import React, { useState,useEffect } from 'react'
+import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { useState,useEffect } from 'react';
+import Container  from '@mui/material/Container';
+import Button  from '@mui/material/Button';
+import { Link } from 'react-router-dom';
+import  TextField  from '@mui/material/TextField';
+const Signup = () => {
+    const [username,setUsername]=useState('');
+    const [password,setPassword]=useState('');
+    const [email,setEmail]=useState('');
+    const [userd,setUserd]=useState([]);
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch('http://localhost:3000/students');
+          const data = await response.json();
+          localStorage.setItem('userData', JSON.stringify(data));
+          setUserd(data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+      fetchData();
+    }, []);
+    const handle=()=>{
+    setUsername(...username,localStorage.setItem('Name',username));
+   setPassword(localStorage.setItem(...password,'Password',password));
+   setEmail(localStorage.setItem(...email,'Email',email));
+   setUsername('');
+   setEmail('')
+   setPassword('');
+   }
+   const handleremove=()=>{
+    localStorage.removeItem('Name');
+    localStorage.removeItem('Password');
+    localStorage.removeItem('Email');
 
-const Signup = ({children}) => {
-     const [names,setNames]=useState([{name:'akash',email:'abc@gmail.com',registerNo:1234}]);
-       useEffect(()=>{
-        const fetItem=async()=>{
-          const response=await fetch('http://localhost:3000/userval');
-          const data=await response.json();
-          setNames(data);
-        };
-        fetItem();
-       },[])
+
+   }
   return (
-    <div>
-        {/* <h1>{names}</h1> */}
-        {React.Children.map(children,child=>
-            React.cloneElement(child,{data:names})
-        )}
-        console.log( {names});
-      
-         {/* <p>Auto Complete</p>
-              <Autocomplete
-              options={names}
-              sx={{width:300}}
-              autoHighlight
-              getOptionLabel={(lab)=>lab.name}
-              renderOption={(prop,options)=>{
-                const {key,...setoption}=prop;
-                return(
-                <Box
-                key={key}
-                component="li"
-                sx={{'&>img':{mr:2,flexShrink:0}}}
-                {...setoption}>
-                <img
-                loading='lazy'
-                width='20'
-                srcSet={`https://images.unsplash.com/photo-1579353977828-2a4eab540b9a?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww `}
-                src={'https://images.unsplash.com/photo-1579353977828-2a4eab540b9a?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww'}
-                alt=''
-                />
-                {options.name} {options.email}
-                
-              </Box>)}}
-              renderInput={(param)=>(
-                <TextField {...param} label="student"
-                slotProps={{
-                  htmlInput:{
-                    ...param.inputProps,autoComplete:'new-password',
-                  }
-                }
-                  
-                }
-                />
-              )}
-              /> */}
-    </div>
+    <Box sx={{ml:60}}>
+        <p>{userd}</p>
+        
+         <Typography sx={{fontSize:30}}>Signup page</Typography>
+                <Box>
+                    <TextField type='text' placeholder='enter your name ' variant='standard' label="username"value={username} onChange={(e)=>setUsername(e.target.value)}/>
+                </Box>
+                <Box>
+                    <TextField type='email' placeholder='enter your email ' variant='filled' label="Email"value={email} onChange={(e)=>setEmail(e.target.value)}/>
+                </Box>
+                <Box>
+                    <TextField type='password' placeholder='enter your password ' variant='filled' label="password"value={password} onChange={(e)=>setPassword(e.target.value)}/>
+                </Box>
+                   <Button variant='contained' component={Link} to='/signup' onClick={handle}>submit</Button>
+                   
+                 
+    </Box>
   )
 }
 

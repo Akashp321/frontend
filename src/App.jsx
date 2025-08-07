@@ -1,154 +1,93 @@
-import React, { useEffect, useState } from 'react'
-import  Autocomplete  from '@mui/material/Autocomplete';
+import React, { useState, useEffect } from 'react'
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import { Box, Button } from '@mui/material';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel'; 
-import Checkbox from '@mui/material/Checkbox';
-import Fab from '@mui/material/Fab';
-import AddIcCall from '@mui/icons-material/AddIcCall';
-import RadioGroup from '@mui/material/RadioGroup';
-import Radio from '@mui/material/Radio';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import Avatar from '@mui/material/Avatar';
-import Badge from '@mui/material/Badge';
-import EmailOutlined from '@mui/icons-material/EmailOutlined';
-import PowerOffOutlined from '@mui/icons-material/PowerOffOutlined';
+import Button from '@mui/material/Button';
+
 const App = () => {
-    const [names,setNames]=useState([{name:'akash',email:'abc@gmail.com',registerNo:1234}]);
-         useEffect(()=>{
-          const fetItem=async()=>{
-            const response=await fetch('http://localhost:3000/products1');
-            const data=await response.json();
-            setNames(data);
-          };
-          fetItem();
-         },[])
-  // const names=[{u1:'akash',img:'https://images.unsplash.com/photo-1579353977828-2a4eab540b9a?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww'},{u1:'akash',img:'https://images.unsplash.com/photo-1579353977828-2a4eab540b9a?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww'},{u1:'akash',img:'https://images.unsplash.com/photo-1579353977828-2a4eab540b9a?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww'},{u1:'akash',img:'https://images.unsplash.com/photo-1579353977828-2a4eab540b9a?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww'}];
-  const buttons=[<Button key={"btn1"}>button1</Button>,];
-  const [menu,setMenu]=useState(" ");
-  const menuchange=(event)=>{
-    setMenu(event.target.value)
-  }
-  return (
-    <div>
-      
-      
-      
-      
-      <p>Auto Complete</p>
-      <Autocomplete
-      options={names}
-      sx={{width:300}}
-      autoHighlight
-      getOptionLabel={(lab)=>lab.name}
-      renderOption={(prop,options)=>{
-        const {key,...setoption}=prop;
-        return(
-        <Box
-        key={key}
-        component="li"
-        sx={{'&>img':{mr:2,flexShrink:0}}}
-        {...setoption}>
-        <img
-        loading='lazy'
-        width='20'
-        srcSet={options.images}
-        src={options.images}
-        alt=''
-        />
-        {options.name} {options.description} 
-        
-      </Box>)}}
-      renderInput={(param)=>(
-        <TextField {...param} label="student"
-        slotProps={{
-          htmlInput:{
-            ...param.inputProps,autoComplete:'new-password',
-          }
-        }
-          
-        }
-        />
-      )}
-      />
-      <div>
-        <p>Group button</p>
-      <ButtonGroup size='small' variant='contained'>
-        <Button  variant='contained' onClick={()=>alert("alert message")}>alert btn</Button>
-        <Button variant='outlined'>submit btn</Button>
-        <Button  variant='text'>cancel btn</Button>
+  const [userd, setUserd]=useState({name: '',regno: '',gender: '',grade: '' });
+ const [findname,setFindname]= useState('');
+  useEffect(() => {
+    const fetchData=async ()=>{
+      try {
+        const response=await fetch('http://localhost:3000/students');
+        const data=await response.json();
+        localStorage.setItem('userData',JSON.stringify(data));
+      } catch (error) {
+        console.error('Error fetching data:',error);
+      }
+    };
+    fetchData();
+  }, []);
 
-      </ButtonGroup>
-      <div>
-      <ButtonGroup size='small' variant='contained'>
-       {buttons}
-      </ButtonGroup>
-      </div>
-      <div>
-        <p>FormGroup</p>
-      <FormGroup>
-        <FormControlLabel control={<Checkbox defaultChecked color='success'/> } label="form1"/>
-        <FormControlLabel control={<Checkbox  /> } label="form2" />
-        <FormControlLabel control={<Checkbox  /> } label="form3" />
-
-      </FormGroup>
-      </div>
-      <div>
-        <p>Icons</p>
-      <Fab color='success'>
-        <AddIcCall/>
-      </Fab>
-      </div>
-      <div><p>radio button</p>
-      <FormGroup>
-      <RadioGroup defaultValue="student 1">
-        <FormControlLabel value={'student 1'} control={<Radio/>} label="student 1"/>
-        <FormControlLabel value={'student 2'} control={<Radio/>} label="student 3"/>
-        <FormControlLabel value={'student 3'} control={<Radio/>} label="student 2"/>
-
-      </RadioGroup>
-      </FormGroup>
-      </div>
-      <div>
-        <FormGroup sx={{margin:10}}>
-          <InputLabel id="id1">Menu</InputLabel>
-          <Select value={menu} onChange={menuchange} labelId='id1' sx={{margin:10}}>
-            <MenuItem value={20}>menu 1</MenuItem>
-            <MenuItem value={30}>menu 2</MenuItem>
-            <MenuItem value={40}>menu 3</MenuItem>
-
-          </Select>
-        </FormGroup>
-      </div>
-      <div>
-        <p>Input</p>
-        <Box>
-      <TextField type='text'  label="user name" variant='filled' multiline maxRows={3} placeholder='enter your name' />
-      <TextField type='password' label="password" variant='filled'/>
-      <TextField type='email' label="user email" variant='filled'/>
-      <TextField type='email' label="user address" variant='filled' multiline maxRows={3}/>
-
-</Box>
-      </div>
-      <div>
-        <p>Avatar</p>
-        <Avatar src='https://images.unsplash.com/photo-1579353977828-2a4eab540b9a?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww'/>
-        <Avatar src='https://images.unsplash.com/photo-1579353977828-2a4eab540b9a?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fHww'/>
-      <p>Badge</p>
-      <Badge badgeContent={4} >
-        <EmailOutlined/>
-      </Badge>
-      <Badge badgeContent={10} >
-        <PowerOffOutlined/>
-      </Badge>
-      </div>
-      </div>
-    </div>
+  const handle=()=>{
+    const existingData = JSON.parse(localStorage.getItem('userData')) || [];
+    const newData = [...existingData, userd];
+    localStorage.setItem('userData', JSON.stringify(newData));
+    alert("Data saved successfully");
+    setUserd({name: '',regno: '',gender: '',grade: ''});
+  };
+  const handelCheck=()=>{
+    const newData=userd.match((uname)=>uname===findname);
+    if(!newData){
+      alert("Data saved successfully");
+    }
+    else alert("Data not ");
     
-  )
-}
-export default App
+  }
+  const handeldele=()=>{
+     const newData=userd.match((uname)=>uname===findname);
+      if(!newData){
+      localStorage.removeItem('userData',JSON.stringify(newData))
+    }
+  }
+// const listdata=userd;
+// console.log("created");
+
+// console.log(listdata);
+
+  return (
+    <Box sx={{ ml:60}}>
+      <Typography sx={{ fontSize: 30 }}>Signup page</Typography>
+
+      <Box>
+        <TextField type='text' placeholder='Enter your name' variant='standard' label="Username" value={userd.name} onChange={(e) => setUserd({ ...userd, name: e.target.value })} />
+      </Box>
+
+      <Box>
+        <TextField type='text' placeholder='Enter your gender' variant='filled' label="Gender" value={userd.gender} onChange={(e) => setUserd({ ...userd, gender: e.target.value }) }/>
+      </Box>
+
+      <Box>
+        <TextField type='text' placeholder='Enter your register no' variant='filled' label="Register" value={userd.regno} onChange={(e) => setUserd({...userd, regno: e.target.value })} />
+      </Box>
+
+      <Box>
+        <TextField type='text' placeholder='Enter your grade' variant='filled' label="Grade"value={userd.grade} onChange={(e) => setUserd({ ...userd, grade: e.target.value })} />
+     </Box>
+
+      <Button variant='contained' onClick={handle}>Submit</Button>
+      <Box>
+        <h1>Login</h1>
+        <Box>
+        <TextField type='text' placeholder='Enter your name' variant='standard' label="Username" value={userd.name} onChange={(e) => setUserd({ ...userd, name: e.target.value })} />
+           <Button variant='contained' onClick={handelCheck}>Submit</Button>
+            <Button variant='contained' onClick={handeldele}>delete</Button>
+      </Box>
+
+      </Box>
+      <Box>
+        <ul>
+          <li>{userd.name}</li>
+          <li>{userd.regno}</li>
+          <li>{userd.gender}</li>
+          <li>{userd.grade}</li>
+
+
+        </ul>
+      </Box>
+    </Box>
+  );
+};
+
+export default App;
