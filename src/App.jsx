@@ -1,19 +1,21 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {  Container } from '@mui/material';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
-import { Typography, Container } from '@mui/material';
-
+import SessionStorage from './components/session/SessionStorage';
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LoginForm/>}/>
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/register" element={<RegisterForm />} />
-        <Route path="/dashboard" element={<Typography variant="h5" mt={4}>Protected Page - Dashboard</Typography>} />
-      </Routes>
-    </Router>
+      <Router>
+        <Container maxWidth="md" sx={{ mt: 4 }}>
+          <Routes>
+            <Route path="/" element={<LoginForm />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/register" element={<RegisterForm />} />
+            <Route path="/session" element={<SessionStorage />} />
+          </Routes>
+        </Container>
+      </Router>
   );
 }
 

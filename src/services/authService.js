@@ -1,16 +1,13 @@
 import axios from 'axios';
-const API = 'http://localhost:3000/userval';
- 
-export const register = (data) => axios.post(`${API}/register`, data);
-localStorage.setItem("register",register);
-export const login = async (data) => {
-  const res = await axios.post(`${API}/login`, data);
-  if (res) {
-    localStorage.setItem('token', res.data.access_token);
-  }
-  return res.data;
+const API_URL = 'http://localhost:3000/userval';
+export const login = (credentials) => {
+  return axios.post(`${API_URL}/login`, credentials);
 };
-
-export const logout = () => {
-  localStorage.removeItem('token');
+export const register = (userData) => {
+  return axios.post(`${API_URL}/register`, userData);
+};
+export const fetchAllUsers = async () => {
+  const response = await axios.get(`${API_URL}/`);
+  localStorage.setItem('userData', JSON.stringify(response.data));
+  return response.data;
 };
