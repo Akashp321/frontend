@@ -17,8 +17,6 @@ import Avatar from '@mui/material/Avatar';
 import Badge from '@mui/material/Badge';
 import EmailOutlined from '@mui/icons-material/EmailOutlined';
 import PowerOffOutlined from '@mui/icons-material/PowerOffOutlined';
-import Login from './session_storage/Login.jsx'
-
 const Uicomponent = () => {
     const [names,setNames]=useState([{name:'akash',email:'abc@gmail.com',registerNo:1234}]);
          useEffect(()=>{
